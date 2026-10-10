@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f2" />
+    <meta name="description" content="在自己的词库里，按记忆节奏稳步复习。" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <title>拾词 · 私人单词本</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#today" aria-label="拾词首页"><span class="brand-mark">拾</span><span><strong>拾词</strong><small>WORD BY WORD</small></span></a>
+        <div class="local-badge"><i></i>仅保存在此设备</div>
+        <nav class="side-nav" aria-label="主导航">
+          <button class="nav-item is-active" data-view="today"><span class="nav-icon">◷</span>今日学习</button>
+          <button class="nav-item" data-view="library"><span class="nav-icon">▤</span>我的词库 <span class="nav-count" id="libraryCount">0</span></button>
+          <button class="nav-item" data-view="progress"><span class="nav-icon">▥</span>学习记录</button>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-note"><span class="note-sun">✳</span><p>慢一点记住，<br />就会记得更久。</p></div>
+        <button class="nav-item settings-nav" data-view="settings"><span class="nav-icon">⚙</span>设置与备份</button>
+        <div class="sidebar-foot">本机学习空间 <span>·</span> 01</div>
+      </aside>
+
+      <main class="main-area">
+        <header class="mobile-header"><a class="brand" href="#today"><span class="brand-mark">拾</span><strong>拾词</strong></a><button class="icon-button" data-view="settings" aria-label="设置" title="设置">⚙</button></header>
+        <section class="page is-visible" id="todayPage">
+          <div class="page-heading today-heading"><div><p class="eyebrow" id="todayDate">TODAY</p><h1>今天，学一点。</h1><p class="subheading">把熟悉的单词，变成真正记得的单词。</p></div><button class="quiet-action" data-view="library"><span>＋</span>管理词库</button></div>
+          <div class="daily-strip"><div class="daily-date"><span class="date-icon">☼</span><div><strong id="dateLabel">今日学习</strong><small id="dueCaption">正在整理今天的复习安排</small></div></div><div class="daily-stats"><div><strong id="todayReviewStat">0</strong><span>今日复习</span></div><i></i><div><strong id="todayNewStat">0</strong><span>今日新学</span></div></div></div>
+
+          <div class="today-layout">
+            <div class="today-main">
+              <section class="study-panel">
+                <div class="panel-heading"><div><span class="section-label">STUDY PLAN</span><h2>安排这一轮</h2></div><span class="panel-mark">01</span></div>
+                <p class="panel-intro">复习到期词与新词可以自由搭配。</p>
+                <div class="plan-rows">
+                  <label class="plan-row"><span class="check-wrap"><input type="checkbox" id="includeReview" checked /><i></i></span><span class="plan-copy"><strong>复习到期词</strong><small id="reviewAvailable">目前没有到期词</small></span><span class="stepper"><button type="button" data-step="review" data-delta="-1" aria-label="减少复习数量">−</button><input id="reviewCount" type="number" min="0" value="0" aria-label="复习数量" /><button type="button" data-step="review" data-delta="1" aria-label="增加复习数量">＋</button></span></label>
+                  <label class="plan-row"><span class="check-wrap"><input type="checkbox" id="includeNew" checked /><i></i></span><span class="plan-copy"><strong>学习新词</strong><small id="newAvailable">先导入一个词库开始</small></span><span class="stepper"><button type="button" data-step="new" data-delta="-1" aria-label="减少新词数量">−</button><input id="newCount" type="number" min="0" value="0" aria-label="新词数量" /><button type="button" data-step="new" data-delta="1" aria-label="增加新词数量">＋</button></span></label>
+                </div>
+                <div class="plan-foot"><span id="planTotal">本轮 0 个单词</span><button class="primary-button" id="startSession" disabled><span>开始学习</span><b>→</b></button></div>
+              </section>
+
+              <section class="library-overview">
+                <div class="section-head"><div><span class="section-label">YOUR COLLECTIONS</span><h2>我的词库</h2></div><button class="text-link" data-view="library">查看全部 <span>→</span></button></div>
+                <div class="collection-list" id="todayCollections"></div>
+              </section>
+            </div>
+            <aside class="today-aside">
+              <section class="streak-panel"><div class="streak-top"><span class="section-label">YOUR RHYTHM</span><span class="streak-symbol">✳</span></div><strong id="streakNumber">0</strong><div class="streak-caption">天连续学习</div><div class="week-dots" id="weekDots"></div><p>保持自己的节奏，<br />每一次回想都算数。</p></section>
+              <section class="mastery-panel"><div class="mastery-head"><span>当前掌握率</span><span id="masteryPercent">0%</span></div><div class="mastery-track"><i id="masteryBar"></i></div><small id="masteryDetail">完成复习后，这里会显示你的进度</small></section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" id="libraryPage">
+          <div class="page-heading"><div><p class="eyebrow">MY COLLECTIONS</p><h1>我的词库</h1><p class="subheading">为不同目标，整理自己的单词。</p></div><button class="primary-button add-button" id="openImport"><span>＋ 新建词库</span></button></div>
+          <div class="library-toolbar"><div class="search-field"><span>⌕</span><input id="librarySearch" placeholder="搜索词库或单词" /></div><span id="librarySummary">0 个词库 · 0 个单词</span></div>
+          <div class="library-grid" id="libraryGrid"></div>
+        </section>
+
+        <section class="page" id="progressPage">
+          <div class="page-heading"><div><p class="eyebrow">LEARNING LOG</p><h1>学习记录</h1><p class="subheading">每一次回想，都在让记忆变得更牢。</p></div><span class="heading-date" id="progressMonth"></span></div>
+          <div class="metric-grid"><article class="metric-card"><span>今日新学</span><strong id="progressNew">0</strong><small>个单词</small><i class="metric-accent mint"></i></article><article class="metric-card"><span>今日复习</span><strong id="progressReview">0</strong><small>个单词</small><i class="metric-accent orange"></i></article><article class="metric-card"><span>当前掌握率</span><strong id="progressMastery">0%</strong><small>复习阶段达到 7 天</small><i class="metric-accent blue"></i></article><article class="metric-card"><span>连续学习</span><strong id="progressStreak">0</strong><small>天</small><i class="metric-accent yellow"></i></article></div>
+          <div class="progress-columns"><section class="progress-section"><div class="section-head"><div><span class="section-label">COLLECTIONS</span><h2>词库进度</h2></div></div><div id="progressCollections" class="progress-collection-list"></div></section><section class="progress-section"><div class="section-head"><div><span class="section-label">LAST 7 DAYS</span><h2>最近一周</h2></div></div><div id="weeklyChart" class="weekly-chart"></div></section></div>
+        </section>
+
+        <section class="page" id="settingsPage">
+          <div class="page-heading"><div><p class="eyebrow">PREFERENCES</p><h1>设置与备份</h1><p class="subheading">学习方式由你决定，数据留在自己的设备。</p></div></div>
+          <div class="settings-layout"><div class="settings-main"><section class="settings-section"><div class="settings-section-head"><div><span class="section-label">AI GENERATION</span><h2>例句生成服务</h2><p>使用 OpenAI 兼容接口生成例句、翻译和相近词义。</p></div><span class="settings-index">01</span></div><label class="field-label">API 地址<input id="apiBase" type="url" placeholder="https://api.openai.com/v1" autocomplete="url" /></label><label class="field-label">模型名称<input id="apiModel" type="text" placeholder="例如 gpt-4o-mini" autocomplete="off" /></label><label class="field-label">API 密钥<span class="secret-input"><input id="apiKey" type="password" placeholder="sk-..." autocomplete="new-password" /><button id="toggleSecret" type="button" aria-label="显示 API 密钥">显示</button></span></label><div class="settings-actions"><span id="apiStatus">密钥仅保存在此浏览器</span><button class="outline-button" id="saveApi">保存设置</button></div></section>
+            <section class="settings-section"><div class="settings-section-head"><div><span class="section-label">DAILY PLAN</span><h2>每日新词目标</h2><p>复习数量根据到期词自动计算。</p></div><span class="settings-index">02</span></div><div class="daily-goal-row"><span>每天学习新词</span><div class="stepper"><button type="button" data-step="goal" data-delta="-1" aria-label="减少每日目标">−</button><input id="dailyGoal" type="number" min="1" max="200" value="20" aria-label="每日新词目标" /><button type="button" data-step="goal" data-delta="1" aria-label="增加每日目标">＋</button></div><button class="outline-button" id="saveGoal">保存</button></div><div class="accent-row"><label for="accentSelect">英语发音</label><select id="accentSelect"><option value="en-US">美式英语</option><option value="en-GB">英式英语</option></select></div></section>
+            <section class="settings-section"><div class="settings-section-head"><div><span class="section-label">BACKUP</span><h2>本地数据备份</h2><p>在更换手机或清理浏览器前，下载一份备份。</p></div><span class="settings-index">03</span></div><div class="backup-actions"><button class="outline-button" id="exportBackup">↓ 导出备份</button><button class="outline-button" id="importBackup">↑ 恢复备份</button><input type="file" id="backupFile" accept=".json,application/json" hidden /></div><small class="settings-footnote">恢复时会合并备份中的词库与进度。</small></section></div>
+            <aside class="settings-aside"><div class="privacy-card"><span class="privacy-seal">⌂</span><h3>你的词库，<br />只在你的设备里。</h3><p>词库、学习记录和 API 密钥保存在当前浏览器。AI 请求会将词条内容发送到你设置的服务。</p><div class="privacy-line"><i></i>本地存储已启用</div></div><div class="schedule-card"><span class="section-label">REVIEW RHYTHM</span><h3>记忆间隔</h3><div class="schedule-row"><span>认识</span><strong>1 · 2 · 4 · 7 · 15 · 30 天</strong></div><div class="schedule-row"><span>模糊</span><strong>1 小时后</strong></div><div class="schedule-row"><span>不认识</span><strong>10 分钟后</strong></div></div></aside></div>
+        </section>
+
+        <footer class="app-footer"><span>拾词 <i>·</i> 私人单词本</span><span>在自己的节奏里，记住更多。</span></footer>
+      </main>
+      <nav class="mobile-tabs" aria-label="底部导航"><button class="is-active" data-view="today"><span>◷</span>今日</button><button data-view="library"><span>▤</span>词库</button><button data-view="progress"><span>▥</span>记录</button><button data-view="settings"><span>⚙</span>设置</button></nav>
+    </div>
+
+    <div class="modal-backdrop" id="importModal" aria-hidden="true"><section class="modal import-modal" role="dialog" aria-modal="true" aria-labelledby="importTitle"><button class="modal-close" data-close aria-label="关闭">×</button><span class="section-label">NEW COLLECTION</span><h2 id="importTitle">创建一个词库</h2><p class="modal-intro">导入英文词条和中文释义，AI 会为每个词生成例句。</p><label class="field-label">词库名称<input id="vocabName" placeholder="例如：工程数学 · Chapter 01" maxlength="48" /></label><label class="upload-zone" id="uploadZone"><input id="vocabFile" type="file" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" /><span class="upload-icon">↑</span><strong>选择 TXT 或 DOCX 文件</strong><small>每行一个词条，例如：abandon v. 放弃；遗弃</small></label><div class="file-name" id="fileName">尚未选择文件</div><div class="import-preview" id="importPreview" hidden></div><div class="modal-progress" id="importProgress" hidden><div class="progress-copy"><span id="importProgressText">准备中</span><span id="importProgressNumber">0%</span></div><div class="mastery-track"><i id="importProgressBar"></i></div></div><div class="modal-error" id="importError" role="status"></div><div class="modal-actions"><button class="outline-button" data-close>取消</button><button class="primary-button" id="runImport"><span>导入并生成</span><b>→</b></button></div></section></div>
+    <div class="modal-backdrop" id="sessionModal" aria-hidden="true"><section class="modal session-modal" role="dialog" aria-modal="true" aria-labelledby="sessionWord"><button class="modal-close" id="closeSession" aria-label="退出学习">×</button><div class="session-top"><span class="session-progress-label" id="sessionMode">今日学习</span><span class="session-counter" id="sessionCounter">1 / 10</span></div><div class="session-progress"><i id="sessionProgressBar"></i></div><div class="session-content" id="sessionContent"></div><div class="session-exit"><button class="text-link" id="endSession">结束本轮学习</button></div></section></div>
+    <div class="modal-backdrop" id="vocabDetailModal" aria-hidden="true"><section class="modal detail-modal" role="dialog" aria-modal="true"><button class="modal-close" data-close aria-label="关闭">×</button><div id="vocabDetail"></div></section></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" type="module"></script>
+    <script>if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));</script>
+  </body>
+</html>
