@@ -1,5 +1,5 @@
 const CACHE_NAME = 'shici-shell-v2';
-const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/manifest.webmanifest', '/icon.svg'];
+const SHELL = ['./', './index.html', './styles.css', './app.js', './manifest.webmanifest', './icon.svg'].map((path) => new URL(path, self.registration.scope).pathname);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL)));
